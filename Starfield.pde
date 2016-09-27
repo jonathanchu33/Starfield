@@ -27,7 +27,7 @@ class NormalParticle
 		speed = Math.random()*5+1;
 		angle = Math.random()*2*Math.PI;
 		myColor = color((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256));
-		size = (Math.sqrt((myX-200)*(myX-200) + (myY-200)*(myY-200)))/50 + 1;
+		size = 1;
 	}
 	void move()
 	{
@@ -38,14 +38,15 @@ class NormalParticle
 			myX = 200;
 			myY = 200;
 		}
+		size = (Math.sqrt((myX-200)*(myX-200) + (myY-200)*(myY-200)))/50 + 1;
 	}
 	void show()
 	{
-		if(Math.sqrt((myX-200)*(myX-200) + (myY-200)*(myY-200)) > 20)
-		{
+		//if(Math.sqrt((myX-200)*(myX-200) + (myY-200)*(myY-200)) > 20)
+		//{
 			fill(myColor);
 			ellipse((float)myX,(float)myY,(float)size,(float)size);
-		}
+		//}
 	}
 }
 interface Particle
