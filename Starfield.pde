@@ -1,20 +1,21 @@
-Particle [] particle = new Particle[300];
+Particle [] particles = new Particle[300];
 void setup()
 {
 	size(400,400);
-	for(int i=0; i<particle.length; i++)
+	for(int i=0; i<particles.length; i++)
 	{
-		particle[i] = new NormalParticle();
+		particles[i] = new NormalParticle();
 	}
-	particle[0] = new OddballParticle();
+	particles[particles.length-2] = new JumboParticle(2);
+	particles[particles.length-1] = new OddballParticle();
 }
 void draw()
 {
 	background(0);
-	for(int i=0; i<particle.length; i++)
+	for(int i=0; i<particles.length; i++)
 	{
-		particle[i].show();
-		particle[i].move();
+		particles[i].show();
+		particles[i].move();
 	}
 }
 class NormalParticle implements Particle
@@ -38,16 +39,14 @@ class NormalParticle implements Particle
 		{
 			myX = 200;
 			myY = 200;
+			angle = Math.random()*2*Math.PI;
 		}
 		size = (Math.sqrt((myX-200)*(myX-200) + (myY-200)*(myY-200)))/50 + 1;
 	}
 	public void show()
 	{
-		//if(Math.sqrt((myX-200)*(myX-200) + (myY-200)*(myY-200)) > 20)
-		//{
 			fill(myColor);
 			ellipse((float)myX,(float)myY,(float)size,(float)size);
-		//}
 	}
 }
 interface Particle
@@ -65,7 +64,7 @@ class OddballParticle implements Particle
 		myY = 200;
 		myColor = color((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256));
 		direction = 0;
-		size = 10;
+		size = 15;
 		time = 0;
 	}
 	public void move()
@@ -84,13 +83,34 @@ class OddballParticle implements Particle
 	}
 	public void show()
 	{
+		if(time > 600)
+			myColor = color((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256));
+		else if(time < -600)
+			myColor = color((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256));
 		fill(myColor);
-		ellipse((float)myX,(float)myY,(float)size,(float)size);
+		rect((float)myX,(float)myY,(float)size,(float)size);
 	}
 }
 
-class JumboParticle //uses inheritance
+class JumboParticle extends NormalParticle
 {
-	//your code here
+	int jumboSize;
+	JumboParticle(int s)
+	{
+		jumboSize = s;
+	}
+	void move()
+	{
+		myX += speed * Math.cos(angle);
+		myY += speed * Math.sin(angle);
+		if(myX > 600 || myX < -200 || myY > 600 || myY < -200)
+		{
+			myX = 200;
+			myY = 200;
+			angle = Math.random()*2*Math.PI;
+			myColor = color((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256));
+		}
+		size = (Math.sqrt((myX-200)*(myX-200) + (myY-200)*(myY-200)))/jumboSize + 1;
+	}
 }
 
