@@ -6,7 +6,7 @@ void setup()
 	{
 		particles[i] = new NormalParticle();
 	}
-	particles[particles.length-2] = new JumboParticle(2);
+	particles[particles.length-2] = new JumboParticle();
 	particles[particles.length-1] = new OddballParticle();
 }
 void draw()
@@ -18,14 +18,15 @@ void draw()
 		particles[i].move();
 	}
 }
+
 class NormalParticle implements Particle
 {
 	int myColor;
 	double myX, myY, speed, angle, size;
 	NormalParticle()
 	{
-		myX = 200;
-		myY = 200;
+		myX = mouseX;
+		myY = mouseY;
 		speed = Math.random()*5+1;
 		angle = Math.random()*2*Math.PI;
 		myColor = color((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256));
@@ -37,11 +38,11 @@ class NormalParticle implements Particle
 		myY += speed * Math.sin(angle);
 		if(myX > 400 || myX < 0 || myY > 400 || myY < 0)
 		{
-			myX = 200;
-			myY = 200;
+			myX = mouseX;
+			myY = mouseY;
 			angle = Math.random()*2*Math.PI;
 		}
-		size = (Math.sqrt((myX-200)*(myX-200) + (myY-200)*(myY-200)))/50 + 1;
+		size = (Math.sqrt((myX-mouseX)*(myX-mouseX) + (myY-mouseY)*(myY-mouseY)))/50 + 1;
 	}
 	public void show()
 	{
@@ -91,26 +92,20 @@ class OddballParticle implements Particle
 		rect((float)myX,(float)myY,(float)size,(float)size);
 	}
 }
-
 class JumboParticle extends NormalParticle
 {
-	int jumboSize;
-	JumboParticle(int s)
-	{
-		jumboSize = s;
-	}
 	void move()
 	{
 		myX += speed * Math.cos(angle);
 		myY += speed * Math.sin(angle);
 		if(myX > 600 || myX < -200 || myY > 600 || myY < -200)
 		{
-			myX = 200;
-			myY = 200;
+			myX = mouseX;
+			myY = mouseY;
 			angle = Math.random()*2*Math.PI;
 			myColor = color((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256));
 		}
-		size = (Math.sqrt((myX-200)*(myX-200) + (myY-200)*(myY-200)))/jumboSize + 1;
+		size = (Math.sqrt((myX-mouseX)*(myX-mouseX) + (myY-mouseY)*(myY-mouseY)))/5 + 1;
 	}
 }
 
